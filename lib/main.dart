@@ -2,9 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'app/theme/app_colors.dart';
-import 'app/modules/welcome/welcome_screen.dart'; // Nanti kita buat ini
+import 'app/modules/welcome/welcome_screen.dart';
+import 'app/modules/auth/auth_controller.dart'; // Import AuthController
 
-void main() {
+void main() async {
+  // 1. Wajib tambahkan ini karena AuthController pakai SharedPreferences
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // 2. Inisialisasi AuthController secara GLOBAL dan PERMANEN
+  // Dengan ini, AuthController tidak akan pernah hilang dari memori
+  Get.put(AuthController(), permanent: true);
+
   runApp(const MyApp());
 }
 
@@ -20,11 +28,11 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: AppColors.background,
         primaryColor: AppColors.primary,
         useMaterial3: true,
-        textTheme: GoogleFonts.poppinsTextTheme(), // Menggunakan Font Poppins
+        textTheme: GoogleFonts.poppinsTextTheme(),
         colorScheme: ColorScheme.dark(
           primary: AppColors.primary,
           surface: AppColors.cardSurface,
-          background: AppColors.background,
+          onSurface: AppColors.textPrimary,
         ),
       ),
       home: const WelcomeScreen(),
