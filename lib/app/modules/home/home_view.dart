@@ -71,24 +71,16 @@ class HomeView extends StatelessWidget {
                     : const SizedBox(),
           ), // Jika belum login, tampilkan kotak kosong (tidak terlihat)
           // --- KODE PROFIL ANDA DI BAWAH INI ---
+          // 2. Tombol Profil & Logout
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: Obx(
               () => IconButton(
                 onPressed: () {
                   if (authController.isLoggedIn.value) {
-                    // JIKA SUDAH LOGIN -> Tampilkan Dialog Logout
-                    Get.defaultDialog(
-                      title: "Akun Saya",
-                      backgroundColor: AppColors.cardSurface,
-                      // ... sisa kode dialog logout Anda ...
-                      onConfirm: () {
-                        Get.back();
-                        authController.logout();
-                      },
-                    );
+                    // TAMPILKAN CUSTOM LOGOUT DIALOG
+                    _showLogoutConfirmation(authController);
                   } else {
-                    // JIKA BELUM LOGIN -> Ke halaman Login
                     Get.to(() => const LoginView());
                   }
                 },
@@ -373,7 +365,7 @@ class HomeView extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text("Book Now"),
+                      child: const Text("Book Now", style: TextStyle(color: Colors.black),),
                     ),
                   ],
                 ),
@@ -383,5 +375,99 @@ class HomeView extends StatelessWidget {
         ],
       ),
     ).animate().fadeIn(delay: (100 * index).ms).slideY(begin: 0.2, end: 0);
+  }
+  // Fungsi untuk memunculkan dialog konfirmasi logout yang keren
+  void _showLogoutConfirmation(AuthController authController) {
+    Get.dialog(
+      Dialog(
+        backgroundColor: AppColors.cardSurface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Ikon Peringatan
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.red.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Iconsax.logout,
+                  color: Colors.redAccent,
+                  size: 40,
+                ),
+              ),
+              const SizedBox(height: 20),
+              // Judul
+              const Text(
+                "Konfirmasi Keluar",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 12),
+              // Pesan
+              Text(
+                "Apakah Anda yakin ingin keluar dari akun ${authController.userRole.value} Anda?",
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: AppColors.textSecondary),
+              ),
+              const SizedBox(height: 32),
+              // Tombol Aksi
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () => Get.back(),
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: AppColors.haze),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text(
+                        "Batal",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Get.back(); // Tutup dialog
+                        authController.logout(); // Panggil logout
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.redAccent,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: const Text(
+                        "Logout",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+      barrierDismissible: true,
+    );
   }
 }

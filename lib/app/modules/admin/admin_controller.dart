@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'manage_users_view.dart';
 import 'manage_catalog_view.dart';
 import '../auth/login_view.dart'; // Pastikan import ini sesuai lokasi LoginView kamu
+import 'manage_orders_view.dart';
 
 class AdminController extends GetxController {
   
@@ -27,6 +28,10 @@ class AdminController extends GetxController {
   }
 
   void toViewOrders() {
-    Get.snackbar("Info", "Fitur View Orders akan segera hadir");
+    Get.to(() => const ManageOrdersView());
   }
+
+  // void toViewOrders() {
+  //   Get.snackbar("Info", "Fitur View Orders akan segera hadir");
+  // }
 }

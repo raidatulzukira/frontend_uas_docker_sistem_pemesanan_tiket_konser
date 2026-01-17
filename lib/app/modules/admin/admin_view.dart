@@ -161,14 +161,14 @@ class AdminView extends StatelessWidget {
                     delay: 800,
                     onTap: controller.toViewOrders,
                   ),
-                  _AdminMenuCard(
-                    title: "Settings",
-                    subtitle: "App configuration",
-                    icon: Iconsax.setting_2,
-                    iconColor: const Color(0xFFBD10E0), // Ungu
-                    delay: 900,
-                    onTap: () {},
-                  ),
+                  // _AdminMenuCard(
+                  //   title: "Settings",
+                  //   subtitle: "App configuration",
+                  //   icon: Iconsax.setting_2,
+                  //   iconColor: const Color(0xFFBD10E0), // Ungu
+                  //   delay: 900,
+                  //   onTap: () {},
+                  // ),
                 ],
               ),
               // Tambahan space di bawah agar tidak mentok
